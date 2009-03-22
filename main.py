@@ -134,6 +134,12 @@ class MainHandler(webapp.RequestHandler):
     path = 'templates/index.htm'
     self.response.out.write(template.render(path, templateValues))
 
+class ArchiveHandler(webapp.RequestHandler):
+  def get(self):
+    templateValues = {'comics': range(1, Count()+1)}
+    path = 'templates/archive.htm'
+    self.response.out.write(template.render(path, templateValues))
+
 class AdminHandler(webapp.RequestHandler):
   def get(self):
     templateValues = {'rand':random.randint(1, 9999)}
@@ -145,6 +151,7 @@ def main():
                                         ('/[0-9]*?', MainHandler),
                                         ('/admin', AdminHandler),
                                         ('/up', UploadComic),
+                                        ('/archive', ArchiveHandler),
                                         ('/img/.*?', ServeImage)
                                         ],
                                        debug=True)

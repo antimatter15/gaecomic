@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>EDIT TEMPLATES/INDEX.HTM (title) - {{title}}</title>
+    <style>
+      #main {
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      #comic {
+        text-align: center;
+        padding: 10px;
+      }
+      .menu a {
+        font-size: medium;
+        text-decoration: none;
+        color: #007fff;
+        font-weight: bold;
+        margin: 5px;
+      }
+      #footer {
+        font-size: xx-small;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center
+      }
+      .embed {
+        font-size: x-small;
+        margin-bottom: 5px;
+      }
+      body {
+        font-family: Helvetica Narrow, sans-serif;
+        background-color: LightGray;
+      }
+      .title {
+        color: gray;
+        margin-top: 0;
+        margin-bottom: 5px;
+        float:right
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <h1 style="margin:0">EDIT TEMPLATES/INDEX.HTM (title)</h1>
+      <h5 style="margin:0">EDIT TEMPLATES/INDEX.HTM (slogan)</h5>
+      <h3 class="title">{{title}} - {{mm}}.{{dd}}.{{yy}}</h3>
+      <br>
+      <div id="comic">
+        Archive
+        <ul>
+          {% for item in comics %}
+            <li><a href="/{{item}}">{{item}}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div id="footer">
+    &copy; Content licenced under Creative Commons Attribution Non Commercial 2.5
+    </div>
+  </body>
+</html>

@@ -23,7 +23,7 @@ def GetComicByName(name):
   if data is not None:
     return data
   else:
-    result = Comic.gql("WHERE name = :1 LIMIT 1", "name"+name).fetch(1)
+    result = Comic.gql("WHERE name = :1 LIMIT 1", name).fetch(1)
     if len(result) > 0:
       data = {
                'name': result[0].name,
@@ -88,7 +88,7 @@ class UploadComic(webapp.RequestHandler):
         file_name = self.request.POST.get('file').filename
         
         im = Comic()
-        im.name    = "name"+file_name
+        im.name    = file_name
         im.content = file_data
         im.author = self.request.get('author')
         im.title = self.request.get('title')
@@ -128,16 +128,11 @@ class MainHandler(webapp.RequestHandler):
                       'first': first,
                       'name': comic['name'],
                       'title': comic['title'],
+                      'author': comic['author'],
                       'mm': comic['date'].month,
                       'dd': comic['date'].day,
                       'yy': comic['date'].year}
     path = 'templates/index.htm'
-    self.response.out.write(template.render(path, templateValues))
-
-class ArchiveHandler(webapp.RequestHandler):
-  def get(self):
-    templateValues = {'comics': range(1, Count()+1)}
-    path = 'templates/archive.htm'
     self.response.out.write(template.render(path, templateValues))
 
 class AdminHandler(webapp.RequestHandler):
@@ -146,13 +141,32 @@ class AdminHandler(webapp.RequestHandler):
     path = 'templates/admin.htm'
     self.response.out.write(template.render(path, templateValues))
 
+class ArchiveHandler(webapp.RequestHandler):
+  def get(self):
+    templateValues = {'comics': range(1, Count()+1)}
+    path = 'templates/archive.htm'
+    self.response.out.write(template.render(path, templateValues))
+
+class FlushMemcache(webapp.RequestHandler):
+  def get(self):
+    self.response.out.write(memcache.flush_all())
+
+class FeedHandler(webapp.RequestHandler):
+  def get(self):
+    result = Comic.gql("ORDER BY date DESC LIMIT 10").fetch(10)
+    templateValues = {'comics': result}
+    path = 'templates/feed.xml'
+    self.response.out.write(template.render(path, templateValues))
+
 def main():
   application = webapp.WSGIApplication([
                                         ('/[0-9]*?', MainHandler),
                                         ('/admin', AdminHandler),
                                         ('/up', UploadComic),
                                         ('/archive', ArchiveHandler),
-                                        ('/img/.*?', ServeImage)
+                                        ('/img/.*?', ServeImage),
+                                        ('/fmc', FlushMemcache),
+                                        ('/feed.xml', FeedHandler)
                                         ],
                                        debug=True)
   wsgiref.handlers.CGIHandler().run(application)

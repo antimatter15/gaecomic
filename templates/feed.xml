@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title>http://EDIT TEMPLATES/FEED.XML(URL)/</title>
+<link href="http://EDIT TEMPLATES/FEED.XML(URL)/" rel="alternate"></link>
+<id>http://EDIT TEMPLATES/FEED.XML(URL)/</id>
+{% for comic in comics %}
+<entry>
+<title>Comic {{comic.id|cut:"id"}}</title>
+<link href="http://EDIT TEMPLATES/FEED.XML(URL)/{{comic.id}}/" rel="alternate">
+</link>
+<updated>2009-03-20T00:00:00Z</updated>
+<id>http://EDIT TEMPLATES/FEED.XML(URL)/{{comic.id|cut:"id"}}/</id>
+<summary type="html">
+&lt;img src="http://EDIT TEMPLATES/FEED.XML(URL)/img/{{comic.name}}" /&gt;
+</summary>
+</entry>
+{% endfor %}
+
+</feed>

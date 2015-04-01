@@ -1,0 +1,1 @@
+A Simple Comic Publishing Engine for Google App Engine.
